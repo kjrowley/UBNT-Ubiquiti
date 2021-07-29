@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2021-07-29T19:01:48Z</date>
+    <groups>
+        <group>
+            <name>Templates/Network Devices</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>A-UBNT-AirMax-2021-SNMP1</template>
+            <name>A-UBNT-AirMax-2021-SNMP1</name>
+            <groups>
+                <group>
+                    <name>Templates/Network Devices</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>Networking</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>WLAN Physical MAC Address</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>ifPhysAddress.4</snmp_oid>
+                    <key>.1.3.6.1.2.1.2.2.1.6.4</key>
+                    <delay>1d</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>MAC Address of the Device as shown via the Ubiquiti Discovery Tool.</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Antenna Type</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41112.1.4.1.1.9.1</snmp_oid>
+                    <key>AntennaType.1</key>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>Antenna Type</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Current SSID</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41112.1.4.5.1.2.1</snmp_oid>
+                    <key>CurrentSSID.1</key>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>Current SSID Device is Configured/Associated</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Current Frequency Mhz</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41112.1.4.1.1.4.1</snmp_oid>
+                    <key>frequency</key>
+                    <delay>5m</delay>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <description>Indicates the Current Frequency (Mhz) of the Access Point the device is associated.</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>ICMP ping</name>
+                    <type>SIMPLE</type>
+                    <key>icmpping</key>
+                    <description>ICMP Ping</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{max(#3)}=0</expression>
+                            <name>{HOST.NAME} Unavailable by ICMP ping</name>
+                            <url>http://{HOST.IP}</url>
+                            <priority>HIGH</priority>
+                            <description>Last three attempts returned timeout.  Please check device connectivity.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>ICMP loss</name>
+                    <type>SIMPLE</type>
+                    <key>icmppingloss</key>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                    <description>Packet/Data Loss - Connectivity Issues</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{min(5m)}&gt;{$ICMP_LOSS_WARN} and {min(5m)}&lt;100</expression>
+                            <name>{HOST.NAME} High ICMP Ping Loss</name>
+                            <opdata>Loss: {ITEM.LASTVALUE1}</opdata>
+                            <url>http://{HOST.IP}</url>
+                            <priority>WARNING</priority>
+                            <description>High ICMP Ping Loss</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>ICMP response time</name>
+                    <type>SIMPLE</type>
+                    <key>icmppingsec</key>
+                    <value_type>FLOAT</value_type>
+                    <units>s</units>
+                    <description>ICMP / Ping Response Time</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{avg(5m)}&gt;{$ICMP_RESPONSE_TIME_WARN}</expression>
+                            <name>{HOST.NAME} High ICMP ping response time</name>
+                            <opdata>Value: {ITEM.LASTVALUE1}</opdata>
+                            <url>http://{HOST.IP}</url>
+                            <priority>WARNING</priority>
+                            <description>High ICMP ping response time</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN Interface Bytes Received</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.10.2</snmp_oid>
+                    <key>ifInOctets.2</key>
+                    <history>365d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>B</units>
+                    <description>Total Incoming Bytes Received from the LAN Interface</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Eth0 Operational Status</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.8.2</snmp_oid>
+                    <key>ifOperStatus.2</key>
+                    <description>Link State.  1 = Linked, 2 = Unplugged</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=2</expression>
+                            <name>{HOST.NAME} No Ethernet Link &quot;Host Device Offline or Unplugged&quot;</name>
+                            <priority>INFO</priority>
+                            <description>No Ethernet Link &quot;Host Device Offline / Unplugged / &quot;Check Cable Connections and POE Adapter&quot;</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN Interface Total Bytes Sent</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.16.2</snmp_oid>
+                    <key>IfOutOctets.2</key>
+                    <history>365d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>B</units>
+                    <description>Total Outgoing Bytes from LAN Interface of the Device</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Eth0 Speed</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.5.2</snmp_oid>
+                    <key>ifSpeed.2</key>
+                    <trends>90d</trends>
+                    <units>b</units>
+                    <description>Ethernet Networking Adapter Rate (10Mb/100Mb/1000Mb)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=10000000</expression>
+                            <name>{HOST.NAME} Ethernet Rate has Dropped to 10 Mbps</name>
+                            <priority>WARNING</priority>
+                            <description>Ethernet Rate Dropped to 10Mbps &quot;Check Cable Connections&quot;</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Antenna Output Power -dbm</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41112.1.4.1.1.6.1</snmp_oid>
+                    <key>IfWlanOutput.1</key>
+                    <value_type>FLOAT</value_type>
+                    <description>Antenna Output Power in -dbm</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Noise Floor</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41112.1.4.5.1.8.1</snmp_oid>
+                    <key>NoiseFloor</key>
+                    <delay>5m</delay>
+                    <history>365d</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <description>Current Frequency Noise Floor.  -90 dbm &gt; -100 dbm is acceptable. Lower than -85 is getting Noisy</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Current Wireless RF Signal Level</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.4.1.41112.1.4.5.1.5.1</snmp_oid>
+                    <key>signal</key>
+                    <history>365d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>dbm</units>
+                    <description>Indicates the current signal achieved to the Access Point.  -75 is acceptable but -50 is ideal. -80 is indicated a Line of Site Issue or Device Issue.</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&lt;-81</expression>
+                            <name>{HOST.NAME} Signal Level Very Low &gt; -81</name>
+                            <priority>INFO</priority>
+                            <description>Wireless Signal Very Low &quot;Check Alignment&quot;</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>CPU utilization</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.3.6.1.4.1.10002.1.1.1.4.2.1.3.2</snmp_oid>
+                    <key>system.cpu.util[loadValue.2]</key>
+                    <delay>1h</delay>
+                    <history>30d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                    <description>5 minute load average of processor load.</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{avg(5m)}&gt;{$CPU_UTIL_MAX}</expression>
+                            <name>{HOST.NAME} High CPU utilization</name>
+                            <priority>AVERAGE</priority>
+                            <description>Last value: {ITEM.LASTVALUE1}.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Firmware Version</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.2.840.10036.3.1.2.1.4.5</snmp_oid>
+                    <key>system.hw.firmware</key>
+                    <delay>5m</delay>
+                    <history>2w</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <description>Firmware Version</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{diff()}=1 and {strlen()}&gt;0</expression>
+                            <recovery_mode>NONE</recovery_mode>
+                            <name>{HOST.NAME} Firmware has changed</name>
+                            <priority>INFO</priority>
+                            <description>Last value: {ITEM.LASTVALUE1}.&#13;
+Firmware version has changed. Ack to close</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Hardware Model Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.2.840.10036.3.1.2.1.3.5</snmp_oid>
+                    <key>system.hw.model</key>
+                    <delay>1h</delay>
+                    <history>2w</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <description>Device Model</description>
+                    <inventory_link>MODEL</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Device Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.1.5.0</snmp_oid>
+                    <key>system.name</key>
+                    <delay>1h</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <description>Device Name</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Uptime</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.1.3.0</snmp_oid>
+                    <key>system.uptime[sysUpTime.0]</key>
+                    <delay>3m</delay>
+                    <history>365d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>uptime</units>
+                    <description>Total Up-time of the Device</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>0.01</params>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&lt;3m</expression>
+                            <name>{HOST.NAME} has been restarted</name>
+                            <priority>INFO</priority>
+                            <description>Device has been restarted.  Uptime reset to 0.</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>Available memory</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>1.3.6.1.4.1.10002.1.1.1.1.2.0</snmp_oid>
+                    <key>vm.memory.free[memFree]</key>
+                    <delay>1d</delay>
+                    <history>30d</history>
+                    <units>B</units>
+                    <description>Available Memory on the Device.</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>1024</params>
+                        </step>
+                    </preprocessing>
+                </item>
+            </items>
+            <macros>
+                <macro>
+                    <macro>{$CPU_UTIL_MAX}</macro>
+                    <value>90</value>
+                </macro>
+                <macro>
+                    <macro>{$MEMORY_UTIL_MAX}</macro>
+                    <value>90</value>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>
