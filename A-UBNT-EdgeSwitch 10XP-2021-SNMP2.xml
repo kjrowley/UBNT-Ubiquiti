@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2021-07-29T19:03:30Z</date>
+    <groups>
+        <group>
+            <name>Templates/Network Devices</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>A-UBNT-Edgeswitch 10 XP-SNMP2</template>
+            <name>A-UBNT-Edgeswitch 10 XP-SNMP2</name>
+            <groups>
+                <group>
+                    <name>Templates/Network Devices</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>CPU</name>
+                </application>
+                <application>
+                    <name>Memory</name>
+                </application>
+                <application>
+                    <name>Networking</name>
+                </application>
+                <application>
+                    <name>System</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>Firmware Version</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.47.1.1.1.1.10.67108992</snmp_oid>
+                    <key>firmware</key>
+                    <description>Current Firmware Version</description>
+                    <applications>
+                        <application>
+                            <name>System</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>ICMP Ping Response - UP or Down</name>
+                    <type>SIMPLE</type>
+                    <key>icmpping</key>
+                    <description>Determines if the Device is either Accessible via Ping or Not.</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{max(#3)}=0</expression>
+                            <name>{HOST.NAME} DEVICE OFFLINE - Unavailable by ICMP ping</name>
+                            <url>http://{HOST.IP}</url>
+                            <priority>HIGH</priority>
+                            <description>Last three attempts returned timeout.  Please check device connectivity.</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>ICMP Ping Loss</name>
+                    <type>SIMPLE</type>
+                    <key>icmppingloss</key>
+                    <value_type>FLOAT</value_type>
+                    <units>%</units>
+                    <description>Packet/Data Loss - Connectivity Issues</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{min(5m)}&gt;{$ICMP_LOSS_WARN} and {min(5m)}&lt;100</expression>
+                            <name>{HOST.NAME} High ICMP Ping Loss</name>
+                            <opdata>Loss: {ITEM.LASTVALUE1}</opdata>
+                            <url>http://{HOST.IP}</url>
+                            <priority>WARNING</priority>
+                            <description>High ICMP Ping Loss Detected</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>ICMP Ping Response Time</name>
+                    <type>SIMPLE</type>
+                    <key>icmppingsec</key>
+                    <value_type>FLOAT</value_type>
+                    <units>s</units>
+                    <description>Response time in milliseconds.</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{avg(5m)}&gt;{$ICMP_RESPONSE_TIME_WARN}</expression>
+                            <name>{HOST.NAME} High ICMP ping response time</name>
+                            <opdata>Value: {ITEM.LASTVALUE1}</opdata>
+                            <url>http://{HOST.IP}</url>
+                            <priority>WARNING</priority>
+                            <description>High ICMP ping response time</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN 1 - Total Bytes Received</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.6.1</snmp_oid>
+                    <key>ifInPackets.1</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 2 - Total Bytes Received</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.6.2</snmp_oid>
+                    <key>ifInPackets.2</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 3 - Total Bytes Received</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.6.3</snmp_oid>
+                    <key>ifInPackets.3</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 4 - Total Bytes Received</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.6.4</snmp_oid>
+                    <key>ifInPackets.4</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 5 - Total Bytes Received</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.6.5</snmp_oid>
+                    <key>ifInPackets.5</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 6 - Total Bytes Received</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.6.6</snmp_oid>
+                    <key>ifInPackets.6</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 7 - Total Bytes Received</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.6.7</snmp_oid>
+                    <key>ifInPackets.7</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 8 - Total Bytes Received</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.6.8</snmp_oid>
+                    <key>ifInPackets.8</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 1 Interface Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.18.1</snmp_oid>
+                    <key>ifName.1</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 2 Interface Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.18.2</snmp_oid>
+                    <key>ifName.2</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 3 Interface Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.18.3</snmp_oid>
+                    <key>ifName.3</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 4 Interface Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.18.4</snmp_oid>
+                    <key>ifName.4</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 5 Interface Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.18.5</snmp_oid>
+                    <key>ifName.5</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 6 Interface Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.18.6</snmp_oid>
+                    <key>ifName.6</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 7 Interface Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.18.7</snmp_oid>
+                    <key>ifName.7</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 8 Interface Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.18.8</snmp_oid>
+                    <key>ifName.8</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 1 Operational Status</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.8.1</snmp_oid>
+                    <key>ifOperStatus.1</key>
+                    <value_type>FLOAT</value_type>
+                    <description>Interface Operational Status (1=Up or 2=Down)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=2</expression>
+                            <name>{HOST.NAME} Port 1 - No Ethernet Link</name>
+                            <priority>WARNING</priority>
+                            <description>No Ethernet Link &quot;Host Device Offline</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN 2 Operational Status</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.8.2</snmp_oid>
+                    <key>ifOperStatus.2</key>
+                    <value_type>FLOAT</value_type>
+                    <description>Interface Operational Status (1=Up or 2=Down)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=2</expression>
+                            <name>{HOST.NAME} Port 2 - No Ethernet Link</name>
+                            <priority>WARNING</priority>
+                            <description>No Ethernet Link &quot;Host Device Offline</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN 3 Operational Status</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.8.3</snmp_oid>
+                    <key>ifOperStatus.3</key>
+                    <value_type>FLOAT</value_type>
+                    <description>Interface Operational Status (1=Up or 2=Down)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=2</expression>
+                            <name>{HOST.NAME} Port 3 - No Ethernet Link</name>
+                            <priority>WARNING</priority>
+                            <description>No Ethernet Link &quot;Host Device Offline</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN 4 Operational Status</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.8.4</snmp_oid>
+                    <key>ifOperStatus.4</key>
+                    <value_type>FLOAT</value_type>
+                    <description>Interface Operational Status (1=Up or 2=Down)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=2</expression>
+                            <name>{HOST.NAME} Port 4 - No Ethernet Link</name>
+                            <priority>WARNING</priority>
+                            <description>No Ethernet Link &quot;Host Device Offline</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN 5 Operational Status</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.8.5</snmp_oid>
+                    <key>ifOperStatus.5</key>
+                    <value_type>FLOAT</value_type>
+                    <description>Interface Operational Status (1=Up or 0=Down)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=2</expression>
+                            <name>{HOST.NAME} Port 5 - No Ethernet Link</name>
+                            <priority>WARNING</priority>
+                            <description>No Ethernet Link &quot;Host Device Offline</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN 6 Operational Status</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.8.6</snmp_oid>
+                    <key>ifOperStatus.6</key>
+                    <value_type>FLOAT</value_type>
+                    <description>Interface Operational Status (1=Up or 2=Down)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=2</expression>
+                            <name>{HOST.NAME} Port 6 - No Ethernet Link</name>
+                            <priority>WARNING</priority>
+                            <description>No Ethernet Link &quot;Host Device Offline</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN 7 Operational Status</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.8.7</snmp_oid>
+                    <key>ifOperStatus.7</key>
+                    <value_type>FLOAT</value_type>
+                    <description>Interface Operational Status (1=Up or 2=Down)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=2</expression>
+                            <name>{HOST.NAME} Port 7 - No Ethernet Link</name>
+                            <priority>WARNING</priority>
+                            <description>No Ethernet Link &quot;Host Device Offline</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN 8 Operational Status</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.8.8</snmp_oid>
+                    <key>ifOperStatus.8</key>
+                    <value_type>FLOAT</value_type>
+                    <description>Interface Operational Status (1=Up or 2=Down)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}=2</expression>
+                            <name>{HOST.NAME} Port 8 - No Ethernet Link</name>
+                            <priority>WARNING</priority>
+                            <description>No Ethernet Link &quot;Host Device Offline</description>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>LAN 1 - Total Bytes Sent</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.10.1</snmp_oid>
+                    <key>IfOutPackets.1</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 2 - Total Bytes Sent</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.10.2</snmp_oid>
+                    <key>IfOutPackets.2</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 3 - Total Bytes Sent</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.10.3</snmp_oid>
+                    <key>IfOutPackets.3</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 4 - Total Bytes Sent</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.10.4</snmp_oid>
+                    <key>IfOutPackets.4</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 5 - Total Bytes Sent</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.10.5</snmp_oid>
+                    <key>IfOutPackets.5</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 6 - Total Bytes Sent</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.10.6</snmp_oid>
+                    <key>IfOutPackets.6</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 7 - Total Bytes Sent</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.10.7</snmp_oid>
+                    <key>IfOutPackets.7</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 8 - Total Bytes Sent</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.31.1.1.1.10.8</snmp_oid>
+                    <key>IfOutPackets.8</key>
+                    <history>365d</history>
+                    <units>B</units>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 1 Speed</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.5.1</snmp_oid>
+                    <key>ifSpeed.1</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>1w</trends>
+                    <units>b</units>
+                    <description>Ethernet Link Rate (10Mb/100Mb/1000Mb)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 2 Speed</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.5.2</snmp_oid>
+                    <key>ifSpeed.2</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>1w</trends>
+                    <units>b</units>
+                    <description>Ethernet Link Rate (10Mb/100Mb/1000Mb)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 3 Speed</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.5.3</snmp_oid>
+                    <key>ifSpeed.3</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>1w</trends>
+                    <units>b</units>
+                    <description>Ethernet Link Rate (10Mb/100Mb/1000Mb)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 4 Speed</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.5.4</snmp_oid>
+                    <key>ifSpeed.4</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>1w</trends>
+                    <units>b</units>
+                    <description>Ethernet Link Rate (10Mb/100Mb/1000Mb)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 5 Speed</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.5.5</snmp_oid>
+                    <key>ifSpeed.5</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>1w</trends>
+                    <units>b</units>
+                    <description>Ethernet Link Rate (10Mb/100Mb/1000Mb)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 6 Speed</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.5.6</snmp_oid>
+                    <key>ifSpeed.6</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>1w</trends>
+                    <units>b</units>
+                    <description>Ethernet Link Rate (10Mb/100Mb/1000Mb)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 7 Speed</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.5.7</snmp_oid>
+                    <key>ifSpeed.7</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>1w</trends>
+                    <units>b</units>
+                    <description>Ethernet Link Rate (10Mb/100Mb/1000Mb)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>LAN 8 Speed</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.2.2.1.5.8</snmp_oid>
+                    <key>ifSpeed.8</key>
+                    <delay>5m</delay>
+                    <history>1w</history>
+                    <trends>1w</trends>
+                    <units>b</units>
+                    <description>Ethernet Link Rate (10Mb/100Mb/1000Mb)</description>
+                    <applications>
+                        <application>
+                            <name>Networking</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Hardware model name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.1.1.0</snmp_oid>
+                    <key>sys.descr.0</key>
+                    <delay>1h</delay>
+                    <history>2w</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <inventory_link>MODEL</inventory_link>
+                    <applications>
+                        <application>
+                            <name>System</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>Device Name</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.1.5.0</snmp_oid>
+                    <key>system.name</key>
+                    <delay>1h</delay>
+                    <history>1w</history>
+                    <trends>0</trends>
+                    <value_type>CHAR</value_type>
+                    <description>Device Name</description>
+                    <applications>
+                        <application>
+                            <name>System</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>System Uptime</name>
+                    <type>SNMP_AGENT</type>
+                    <snmp_oid>.1.3.6.1.2.1.1.3.0</snmp_oid>
+                    <key>system.uptime[sysUpTime.0]</key>
+                    <delay>10m</delay>
+                    <history>365d</history>
+                    <value_type>FLOAT</value_type>
+                    <units>uptime</units>
+                    <description>Uptime</description>
+                    <applications>
+                        <application>
+                            <name>System</name>
+                        </application>
+                    </applications>
+                    <preprocessing>
+                        <step>
+                            <type>MULTIPLIER</type>
+                            <params>0.01</params>
+                        </step>
+                    </preprocessing>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&lt;10m</expression>
+                            <name>{HOST.NAME} has been restarted (uptime &lt; 10m)</name>
+                            <priority>INFO</priority>
+                            <description>Uptime is less than 10 minutes{Template Module Generic</description>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+            </items>
+            <macros>
+                <macro>
+                    <macro>{$CPU_UTIL_MAX}</macro>
+                    <value>90</value>
+                </macro>
+                <macro>
+                    <macro>{$MEMORY_UTIL_MAX}</macro>
+                    <value>90</value>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>
